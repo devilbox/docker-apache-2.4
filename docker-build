@@ -1,0 +1,2 @@
+#!/bin/sh
+docker build -t cytopia/apache-2.4 .
