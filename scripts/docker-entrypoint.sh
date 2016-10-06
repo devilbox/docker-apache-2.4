@@ -1,5 +1,16 @@
 #!/bin/sh -eu
 
+##
+## Variables
+##
+#HTTPD_CUSTOM_CONFIG="/etc/httpd/conf.d/defaults.conf"
+
+
+
+##
+## Functions
+##
+
 run() {
 	_cmd="${1}"
 
@@ -25,48 +36,42 @@ runsu() {
 }
 
 
+
+
 ################################################################################
 # MAIN ENTRY POINT
 ################################################################################
 
-
 ##
-## Forward database port to 127.0.0.1 ?
+## Adjust timezone
 ##
-
-if set | grep '^FORWARD_DB_PORT_TO_LOCALHOST=' >/dev/null 2>&1; then
-
-	if [ "${FORWARD_DB_PORT_TO_LOCALHOST}" = "1" ]; then
-		if ! set | grep '^DB_REMOTE_ADDR=' >/dev/null 2>&1; then
-			echo >&2 "You have enabled to port-forward database port to 127.0.0.1."
-			echo >&2 "\$DB_REMOTE_ADDR must be set for this to work."
-			exit 1
-		fi
-		if ! set | grep '^DB_REMOTE_PORT=' >/dev/null 2>&1; then
-			echo >&2 "You have enabled to port-forward database port to 127.0.0.1."
-			echo >&2 "\$DB_REMOTE_PORT must be set for this to work."
-			exit 1
-		fi
-		if ! set | grep '^LOCALHOST_PORT=' >/dev/null 2>&1; then
-			echo >&2 "You have enabled to port-forward database port to 127.0.0.1."
-			echo >&2 "\$LOCALHOST_PORT must be set for this to work."
-			exit 1
-		fi
-		##
-		## Start socat tunnel
-		## bring remove mysql to localhost
-		##
-		## This allows to have 3306 on 127.0.0.1
-		##
-		runsu "/usr/bin/socat tcp-listen:${LOCALHOST_PORT},reuseaddr,fork tcp:$DB_REMOTE_ADDR:$DB_REMOTE_PORT &"
-
+if set | grep '^TIMEZONE='  >/dev/null 2>&1; then
+	if [ -f "/usr/share/zoneinfo/${TIMEZONE}" ]; then
+		runsu "rm /etc/localtime"
+		runsu "ln -s /usr/share/zoneinfo/${TIMEZONE} /etc/localtime"
+		runsu "date"
+	else
+		echo >&2 "Invalid timezone for \$TIMEZONE."
+		echo >&2 "\$TIMEZONE: '${TIMEZONE}' does not exist."
+		exit 1
 	fi
 fi
 
+
+
+##
+## Add new Apache configuration dir
+##
+if set | grep '^CUSTOM_HTTPD_CONF_DIR='  >/dev/null 2>&1; then
+	# Tell apache to also look into this custom dir for configuratoin
+	runsu "echo 'IncludeOptional ${CUSTOM_HTTPD_CONF_DIR}/*.conf' >> /etc/httpd/conf/httpd.conf"
+fi
 
 
 
 ##
 ## Start Apache
 ##
+runsu "hostname -I"
+runsu "/usr/sbin/httpd -v 2>&1 | head -1"
 runsu "/usr/sbin/httpd -DFOREGROUND"

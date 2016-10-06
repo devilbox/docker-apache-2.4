@@ -2,9 +2,23 @@
 
 
 ##
+## VARIABLES
+##
+VERSION_GOSU="1.2"
+HTTPD_CONF="/etc/httpd/conf/httpd.conf"
+
+
+
+
+MY_USER="apache"
+MY_GROUP="apache"
+MY_UID="48"
+MY_GID="48"
+
+
+##
 ## FUNCTIONS
 ##
-
 print_headline() {
 	_txt="${1}"
 	_blue="\033[0;34m"
@@ -35,40 +49,24 @@ run() {
 ##
 ## Adding Users
 ##
-print_headline "0. Adding Users"
-
-# Apache User
-run "echo 'apache:x:48:' >> /etc/group"
-run "adduser apache -u 48 -s /bin/bash -d /home/apache -g apache"
-
-# Deploy User
-run "echo 'metopia:x:510:' >> /etc/group"
-run "adduser cytopia -u 1000 -s /bin/bash -d /home/cytopia -g metopia"
-
-# Link group of both
-run "usermod -a -G apache cytopia"
-run "usermod -a -G metopia apache"
-
+print_headline "1. Adding Users"
+run "groupadd -g ${MY_GID} -r ${MY_GROUP}"
+run "adduser ${MY_USER} -u ${MY_UID} -M -s /sbin/nologin -g ${MY_GROUP}"
 
 
 
 ###
 ### Adding Repositories
 ###
-print_headline "1. Adding Repository"
+print_headline "2. Adding Repository"
 run "yum -y install epel-release"
-run "rpm -ivh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm"
-run "yum-config-manager --enable remi"
-run "yum-config-manager --enable remi-php56"
-run "yum-config-manager --disable remi-php70"
-run "yum-config-manager --disable remi-php71"
 
 
 
 ###
 ### Updating Packages
 ###
-print_headline "2. Updating Packages Manager"
+print_headline "3. Updating Packages Manager"
 run "yum clean all"
 run "yum -y check"
 run "yum -y update"
@@ -78,80 +76,49 @@ run "yum -y update"
 ###
 ### Installing Packages
 ###
-print_headline "3. Installing Packages"
+print_headline "4. Installing Packages"
 run "yum -y install \
 	httpd \
+	mod_xsendfile \
 	php \
-	php-bcmath \
-	php-cli \
-	php-common \
-	php-gd \
-	php-imap \
-	php-intl \
-	php-ldap \
-	php-magickwand \
-	php-mbstring \
-	php-mcrypt \
-	php-mysql \
-	php-mysqlnd \
-	php-opcache \
-	php-pdo \
-	php-pspell \
-	php-recode \
-	php-soap \
-	php-tidy \
-	php-xml \
-	php-xmlrpc \
-	php-pecl-uploadprogress
 	"
+# PHP is required (pulls mod_php) so that `php_admin_value`
+# is allowed inside apache directives
 
 
 
-###
-### Installing additional HTTP Modules
-###
-print_headline "4. Installing additional HTTP Modules"
-run "yum -y groupinstall 'Development Tools'"
-run "yum -y install httpd-devel"
 
-run "cd /tmp && curl -O  https://tn123.org/mod_xsendfile/mod_xsendfile-0.12.tar.gz"
-run "cd /tmp && tar xfvz mod_xsendfile-0.12.tar.gz"
-run "cd /tmp/mod_xsendfile-0.12 && apxs -cia mod_xsendfile.c"
-run "rm -rf /tmp/mod_xsendfile*"
-
-run "yum -y remove httpd-devel"
-run "yum -y groupremove 'Development Tools'"
-
-
-
-###
-### Configure Apache
-###
+##
+## Configure Apache
+##
+## (Remove all custom config)
+##
 print_headline "5. Configure Apache"
-if [ -f "/etc/httpd/conf.d/welcome.conf" ]; then
-	run "mv /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/welcome.conf.off"
+
+# Clean all configs
+if [ ! -d "/etc/httpd/conf.d/" ]; then
+	run "mkdir -p /etc/httpd/conf.d/"
+else
+	run "rm -rf /etc/httpd/conf.d/*"
 fi
-if [ -f "/etc/httpd/conf.d/userdir.conf" ]; then
-	run "mv /etc/httpd/conf.d/userdir.conf /etc/httpd/conf.d/userdir.conf.off"
-fi
+
+# Listen, ServerName and additional config path
+run "sed -i'' 's/^User[[:space:]]*=.*$/User = ${MY_USER}/g' ${HTTPD_CONF}"
+run "sed -i'' 's/^Group[[:space:]]*=.*$/Group = ${MY_GROUP}/g' ${HTTPD_CONF}"
 
 
-
-###
-### Installing Socat (for tunneling remote mysql to localhost)
-###
-print_headline "6. Installing Socat"
-run "yum -y install socat"
+run "sed -i'' 's/^Listen[[:space:]].*$/Listen 0.0.0.0:80/g' ${HTTPD_CONF}"
+run "sed -i'' 's/^#ServerName[[:space:]].*$/ServerName localhost:80/g' ${HTTPD_CONF}"
 
 
 
 ###
 ### Installing Gosu
 ###
-print_headline "7. Installing Gosu"
+print_headline "6. Installing Gosu"
 run "gpg --keyserver pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4"
-run "curl -o /usr/local/bin/gosu -SL https://github.com/tianon/gosu/releases/download/1.2/gosu-amd64"
-run "curl -o /usr/local/bin/gosu.asc -SL https://github.com/tianon/gosu/releases/download/1.2/gosu-amd64.asc"
+run "curl -SL -o /usr/local/bin/gosu https://github.com/tianon/gosu/releases/download/${VERSION_GOSU}/gosu-amd64 --retry 999 --retry-max-time 0 -C -"
+run "curl -SL -o /usr/local/bin/gosu.asc https://github.com/tianon/gosu/releases/download/${VERSION_GOSU}/gosu-amd64.asc --retry 999 --retry-max-time 0 -C -"
 run "gpg --verify /usr/local/bin/gosu.asc"
 run "rm /usr/local/bin/gosu.asc"
 run "rm -rf /root/.gnupg/"
@@ -162,9 +129,9 @@ run "chmod +s /usr/local/bin/gosu"
 
 
 ###
-### Creating Paths
+### Creating Mass VirtualHost dirs
 ###
-print_headline "8. Creating Paths"
+print_headline "7. Creating Mass VirtualHost dirs"
 run "mkdir -p /shared/httpd"
 run "chmod 775 /shared/httpd"
-run "chown apache:apache /shared/httpd"
+run "chown ${MY_USER}:${MY_GROUP} /shared/httpd"
