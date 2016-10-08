@@ -140,4 +140,4 @@ fi
 ### Start
 ###
 log "info" "Starting $(/usr/sbin/httpd -v 2>&1 | head -1)"
-runsu "/usr/sbin/httpd -DFOREGROUND"
+runsu "/usr/sbin/httpd -DFOREGROUND" "1"
