@@ -105,8 +105,6 @@ fi
 
 if ! set | grep '^TIMEZONE='  >/dev/null 2>&1; then
 	log "warn" "\$TIMEZONE not set."
-	log "warn" "Setting PHP: timezone=UTC"
-	runsu "sed -i'' 's|;*date.timezone[[:space:]]*=.*$|date.timezone = UTC|g' /etc/php.ini"
 else
 	if [ -f "/usr/share/zoneinfo/${TIMEZONE}" ]; then
 		# Unix Time
