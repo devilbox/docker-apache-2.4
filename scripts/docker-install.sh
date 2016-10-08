@@ -58,6 +58,7 @@ run "adduser ${MY_USER} -u ${MY_UID} -M -s /sbin/nologin -g ${MY_GROUP}"
 ###
 ### Adding Repositories
 ###
+### (required for mod_xsendfile)
 print_headline "2. Adding Repository"
 run "yum -y install epel-release"
 
@@ -135,3 +136,11 @@ print_headline "7. Creating Mass VirtualHost dirs"
 run "mkdir -p /shared/httpd"
 run "chmod 775 /shared/httpd"
 run "chown ${MY_USER}:${MY_GROUP} /shared/httpd"
+
+
+
+###
+### Cleanup unecessary packages
+###
+print_headline "8. Cleanup unecessary packages"
+run "yum -y autoremove"
