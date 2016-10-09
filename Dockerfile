@@ -1,9 +1,9 @@
 ##
 ## Apache 2.4
 ##
-
 FROM centos:7
 MAINTAINER "cytopia" <cytopia@everythingcli.org>
+
 
 # Copy scripts
 COPY ./scripts/docker-install.sh /
@@ -15,9 +15,16 @@ RUN /docker-install.sh
 
 
 ##
+## Ports
+##
+EXPOSE 80
+
+
+##
 ## Volumes
 ##
 VOLUME /var/log/httpd
+
 
 ##
 ## Become apache in order to have mounted files
@@ -25,10 +32,8 @@ VOLUME /var/log/httpd
 ##
 User apache
 
-# Autostart
-ENTRYPOINT ["/docker-entrypoint.sh"]
 
 ##
-## Ports
+## Entrypoint
 ##
-EXPOSE 80
+ENTRYPOINT ["/docker-entrypoint.sh"]
