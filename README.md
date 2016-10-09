@@ -37,7 +37,10 @@ $ docker run -i -t cytopia/apache-2.4
 
 ### Default mount points
 
-- None
+| Docker | Description |
+|--------|-------------|
+| /var/log/httpd | Apache log dir |
+
 
 ### Default ports
 

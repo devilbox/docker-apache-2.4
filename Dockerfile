@@ -15,6 +15,11 @@ RUN /docker-install.sh
 
 
 ##
+## Volumes
+##
+VOLUME /var/log/httpd
+
+##
 ## Become apache in order to have mounted files
 ## with apache user rights
 ##
