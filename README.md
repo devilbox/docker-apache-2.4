@@ -16,8 +16,15 @@ This docker image is part of the **[devilbox](https://github.com/cytopia/devilbo
 
 ## Usage
 
+Start plain
+
 ```shell
 $ docker run -i -t cytopia/apache-2.4
+```
+
+Start with external PHP-FPM support
+```shell
+$ docker run -e PHP_FPM_ENABLE=1 -e PHP_FPM_SERVER_ADDR=172.16.238.1 -e PHP_FPM_SERVER_PORT=9000 -t cytopia/apache-2.4
 ```
 
 ## Options
