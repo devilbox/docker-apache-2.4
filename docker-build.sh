@@ -12,7 +12,6 @@ run() {
 	sh -c "LANG=C LC_ALL=C ${_cmd}"
 }
 
-
 # Check Dockerfile
 if [ ! -f "Dockerfile" ]; then
 	echo "Dockerfile not found."
@@ -32,4 +31,4 @@ DATE="$( date '+%Y-%m-%d' )"
 run "sed -i'' 's/build-date=\".*\"/build-date=\"${DATE}\"/g' Dockerfile"
 
 # Build Docker
-run "docker build --no-cache -t cytopia/${NAME} ."
+run "docker build -t cytopia/${NAME} ."
