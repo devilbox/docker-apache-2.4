@@ -26,6 +26,13 @@ if ! grep -q 'image=".*"' Dockerfile > /dev/null 2>&1; then
 fi
 
 NAME="$( grep 'image=".*"' Dockerfile | sed 's/^[[:space:]]*//g' | awk -F'"' '{print $2}' )"
+
+COUNT="$( docker ps | grep -c "cytopia/${NAME}" || true)"
+if [ "${COUNT}" != "1" ]; then
+	echo "${COUNT} container running. Unable to attach."
+	exit 1
+fi
+
 DID="$(docker ps | grep "cytopia/${NAME}" | awk '{print $1}')"
 
 echo "Attaching to: cytopia/${NAME}"
