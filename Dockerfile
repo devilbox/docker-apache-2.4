@@ -22,3 +22,8 @@ User apache
 
 # Autostart
 ENTRYPOINT ["/docker-entrypoint.sh"]
+
+##
+## Ports
+##
+EXPOSE 80
