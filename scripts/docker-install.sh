@@ -89,11 +89,11 @@ run "yum -y install \
 
 
 
-##
-## Configure Apache
-##
-## (Remove all custom config)
-##
+###
+### Configure Apache
+###
+### (Remove all custom config)
+###
 print_headline "5. Configure Apache"
 
 # Clean all configs
@@ -103,11 +103,11 @@ else
 	run "rm -rf /etc/httpd/conf.d/*"
 fi
 
-# Listen, ServerName and additional config path
+# User and Group
 run "sed -i'' 's/^User[[:space:]]*=.*$/User = ${MY_USER}/g' ${HTTPD_CONF}"
 run "sed -i'' 's/^Group[[:space:]]*=.*$/Group = ${MY_GROUP}/g' ${HTTPD_CONF}"
 
-
+# Listen and ServerName
 run "sed -i'' 's/^Listen[[:space:]].*$/Listen 0.0.0.0:80/g' ${HTTPD_CONF}"
 run "sed -i'' 's/^#ServerName[[:space:]].*$/ServerName localhost:80/g' ${HTTPD_CONF}"
 

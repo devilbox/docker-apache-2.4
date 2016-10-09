@@ -121,11 +121,64 @@ log "info" "Docker date set to: $(date)"
 
 
 
+###
+### Prepare PHP-FPM
+###
+if ! set | grep '^PHP_FPM_ENABLE=' >/dev/null 2>&1; then
+	log "info" "\$PHP_FPM_ENABLE not set. PHP-FPM support disabled."
+else
+	if [ "${PHP_FPM_ENABLE}" = "1" ]; then
+
+		# PHP-FPM address
+		if ! set | grep '^PHP_FPM_SERVER_ADDR=' >/dev/null 2>&1; then
+			log "err" "PHP-FPM enabled, but \$PHP_FPM_SERVER_ADDR not set."
+			exit 1
+		fi
+		if [ "${PHP_FPM_SERVER_ADDR}" = "" ]; then
+			log "err" "PHP-FPM enabled, but \$PHP_FPM_SERVER_ADDR is empty."
+			exit 1
+		fi
+
+		# PHP-FPM port
+		if ! set | grep '^PHP_FPM_SERVER_PORT=' >/dev/null 2>&1; then
+			log "err" "PHP-FPM enabled, but \$PHP_FPM_SERVER_PORT not set."
+			exit 1
+		fi
+		if [ "${PHP_FPM_SERVER_PORT}" = "" ]; then
+			log "err" "PHP-FPM enabled, but \$PHP_FPM_SERVER_PORT is empty."
+			exit 1
+		fi
+
+		PHP_FPM_CONFIG="/etc/httpd/conf.d/php-fpm.conf"
+
+		# Enable
+		log "info" "Enabling PHP-FPM at: ${PHP_FPM_SERVER_ADDR}:${PHP_FPM_SERVER_PORT}"
+		runsu "echo '#### PHP-FPM config ####' > ${PHP_FPM_CONFIG}"
+		runsu "echo '' >> ${PHP_FPM_CONFIG}"
+		runsu "echo '# enablereuse' >> ${PHP_FPM_CONFIG}"
+		runsu "echo '# Defining a worker will improve performance' >> ${PHP_FPM_CONFIG}"
+		runsu "echo '# And in this case, re-use the worker (dependent on support from the fcgi application)' >> ${PHP_FPM_CONFIG}"
+		runsu "echo '# If you have enough idle workers, this would only improve the performance marginally' >> ${PHP_FPM_CONFIG}"
+		runsu "echo '#' >> ${PHP_FPM_CONFIG}"
+		runsu "echo '# enablereuse requires Apache 2.4.11 or later' >> ${PHP_FPM_CONFIG}"
+		runsu "echo '#<Proxy \"fcgi://172.16.238.11:9000/\" enablereuse=on max=10></Proxy>' >> ${PHP_FPM_CONFIG}"
+		runsu "echo '<FilesMatch \"\.php\$\">' >> ${PHP_FPM_CONFIG}"
+		runsu "echo '    Require all granted' >> ${PHP_FPM_CONFIG}"
+		runsu "echo '    # Pick one of the following approaches' >> ${PHP_FPM_CONFIG}"
+		runsu "echo '    # Use the standard TCP socket' >> ${PHP_FPM_CONFIG}"
+		runsu "echo '    SetHandler \"proxy:fcgi://${PHP_FPM_SERVER_ADDR}:${PHP_FPM_SERVER_PORT}\"' >> ${PHP_FPM_CONFIG}"
+		runsu "echo '    # If your version of httpd is 2.4.9 or newer (or has the back-ported feature), you can use the unix domain socket' >> ${PHP_FPM_CONFIG}"
+		runsu "echo '    #SetHandler \"proxy:unix:/path/to/app.sock|fcgi://localhost/:9000\"' >> ${PHP_FPM_CONFIG}"
+		runsu "echo '</FilesMatch>' >> ${PHP_FPM_CONFIG}"
+	fi
+fi
 
 
-##
-## Add new Apache configuration dir
-##
+
+
+###
+### Add new Apache configuration dir
+###
 if ! set | grep '^CUSTOM_HTTPD_CONF_DIR='  >/dev/null 2>&1; then
 	log "info" "\$CUSTOM_HTTPD_CONF_DIR not set. No custom include directory added."
 else

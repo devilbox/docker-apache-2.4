@@ -4,10 +4,13 @@
 
 [![cytopia/apache-2.4](http://dockeri.co/image/cytopia/apache-2.4)](https://hub.docker.com/r/cytopia/apache-2.4/)
 
+**[Apache 2.2](https://github.com/cytopia/docker-apache-2.2) | Apache 2.4**
+
 ----
 
 Apache 2.4 Docker on CentOS 7
 
+This docker image is part of the **[devilbox](https://github.com/cytopia/devilbox)**
 
 ----
 
@@ -32,6 +35,9 @@ $ docker run -i -t cytopia/apache-2.4
 |----------|------|-------------|
 | DEBUG_COMPOSE_ENTRYPOINT | bool | Show shell commands executed during start.<br/>Value: `0` or `1` |
 | TIMEZONE | string | Set docker OS timezone.<br/>(Example: `Europe/Berlin`) |
+| PHP_FPM_ENABLE | bool | Enable PHP-FPM support.<br/>Value: `0` or `1` |
+| PHP_FPM_SERVER_ADDR | string | IP address of remote PHP-FPM server |
+| PHP_FPM_SERVER_PORT | int | Port  of remote PHP-FPM server |
 | CUSTOM_HTTPD_CONF_DIR | string | Specify a directory inside the docker where Apache should look for additional config files (`*.conf`).<br/><br/>Make sure to mount this directory from your host into the docker. |
 
 
