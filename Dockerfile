@@ -1,7 +1,7 @@
 ##
 ## Apache 2.4
 ##
-FROM centos:7
+FROM centos:latest
 MAINTAINER "cytopia" <cytopia@everythingcli.org>
 
 
@@ -13,7 +13,7 @@ LABEL \
 	image="apache-2.4" \
 	vendor="cytopia" \
 	license="MIT" \
-	build-date="2016-10-10"
+	build-date="2016-10-11"
 
 
 # Copy scripts

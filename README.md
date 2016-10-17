@@ -4,7 +4,7 @@
 
 [![cytopia/apache-2.4](http://dockeri.co/image/cytopia/apache-2.4)](https://hub.docker.com/r/cytopia/apache-2.4/)
 
-**[Apache 2.2](https://github.com/cytopia/docker-apache-2.2) | Apache 2.4**
+**[Apache 2.2](https://github.com/cytopia/docker-apache-2.2) | Apache 2.4 | [Nginx stable](https://github.com/cytopia/docker-nginx-stable) | [Nginx mainline](https://github.com/cytopia/docker-nginx-mainline)**
 
 ----
 
