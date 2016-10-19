@@ -141,12 +141,13 @@ else
 
 		# PHP-FPM port
 		if ! set | grep '^PHP_FPM_SERVER_PORT=' >/dev/null 2>&1; then
-			log "err" "PHP-FPM enabled, but \$PHP_FPM_SERVER_PORT not set."
-			exit 1
-		fi
-		if [ "${PHP_FPM_SERVER_PORT}" = "" ]; then
-			log "err" "PHP-FPM enabled, but \$PHP_FPM_SERVER_PORT is empty."
-			exit 1
+			log "info" "PHP-FPM enabled, but \$PHP_FPM_SERVER_PORT not set."
+			lgo "info" "Defaulting PHP-FPM port to 9000"
+			PHP_FPM_SERVER_PORT="9000"
+		elif [ "${PHP_FPM_SERVER_PORT}" = "" ]; then
+			log "info" "PHP-FPM enabled, but \$PHP_FPM_SERVER_PORT is empty."
+			lgo "info" "Defaulting PHP-FPM port to 9000"
+			PHP_FPM_SERVER_PORT="9000"
 		fi
 
 		PHP_FPM_CONFIG="/etc/httpd/conf.d/php-fpm.conf"
