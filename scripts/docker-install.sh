@@ -111,6 +111,86 @@ run "sed -i'' 's/^Group[[:space:]]*=.*$/Group = ${MY_GROUP}/g' ${HTTPD_CONF}"
 run "sed -i'' 's/^Listen[[:space:]].*$/Listen 0.0.0.0:80/g' ${HTTPD_CONF}"
 run "sed -i'' 's/^#ServerName[[:space:]].*$/ServerName localhost:80/g' ${HTTPD_CONF}"
 
+# Add Custom http Configuration
+{
+	echo "CustomLog \"/var/log/httpd/access_log\" combined";
+	echo "ErrorLog \"/var/log/httpd/error_log\"";
+	echo "LogLevel warn";
+	echo;
+
+	echo "AddDefaultCharset UTF-8";
+	echo;
+
+	echo "HostnameLookups Off";
+	echo;
+
+	echo "Timeout 60";
+	echo "KeepAlive On";
+	echo "KeepAliveTimeout 10";
+	echo "MaxKeepAliveRequests 100";
+	echo;
+
+	echo "EnableMMAP Off";
+	echo "EnableSendfile Off";
+	echo;
+
+	echo "XSendFile On";
+	echo "XSendFilePath /var/www/html";
+	echo;
+
+} > "/etc/httpd/conf.d/http-defaults.conf"
+
+
+# Add Default vhost Configuration
+{
+	echo "<VirtualHost _default_:80>";
+	echo "    ServerName  localhost";
+	echo "    ServerAdmin root@localhost";
+	echo;
+
+	echo "    ErrorLog  /var/log/httpd/localhost-error.log";
+	echo "    CustomLog /var/log/httpd/localhost-access.log combined";
+	echo;
+
+	echo "    DirectoryIndex index.html index.htm index.php";
+	echo;
+
+	echo "    DocumentRoot \"/var/www/html\"";
+	echo;
+
+	echo "    <Directory \"/var/www/html\">";
+	echo "        DirectoryIndex index.html index.htm index.php";
+	echo;
+
+	echo "        AllowOverride All";
+	echo "        Options All";
+	echo;
+
+	echo "        RewriteEngine on";
+	echo "        RewriteBase /";
+	echo;
+
+	echo "        Order allow,deny";
+	echo "        Allow from all";
+	echo "        Require all granted";
+	echo "    </Directory>";
+	echo "</VirtualHost>";
+	echo;
+
+} > "/etc/httpd/conf.d/localhost.conf"
+
+
+
+# Add test Page
+if [ ! -d "/var/www/html" ]; then
+	run "mkdir -p /var/www/html"
+else
+	run "rm -rf /var/www/html/*"
+fi
+run "echo '<?php phpversion(); ?>' > /var/www/html/index.php"
+run "echo 'It works' > /var/www/html/index.html"
+run "chown -R ${MY_USER}:${MY_GROUP} /var/www/html"
+
 
 
 ###
