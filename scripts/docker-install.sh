@@ -88,7 +88,6 @@ run "yum -y install \
 
 
 
-
 ###
 ### Configure Apache
 ###
@@ -178,8 +177,6 @@ run "sed -i'' 's/^#ServerName[[:space:]].*$/ServerName localhost:80/g' ${HTTPD_C
 	echo;
 
 } > "/etc/httpd/conf.d/localhost.conf"
-
-
 
 # Add test Page
 if [ ! -d "/var/www/html" ]; then

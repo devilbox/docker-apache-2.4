@@ -35,7 +35,6 @@
 | PHP_FPM_SERVER_PORT | int | `9000` | Port of remote PHP-FPM server |
 | CUSTOM_HTTPD_CONF_DIR | string | `` | Specify a directory inside the docker where Apache should look for additional config files (`*.conf`).<br/><br/>This will overwrite the default virtual host including the PHP FPM settings.<br/><br/>Make sure to mount this directory from your host into the docker. |
 
-
 ### Default mount points
 
 | Docker | Description |
