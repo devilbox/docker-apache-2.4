@@ -127,7 +127,7 @@ It offers pre-configured mass virtual hosts and an intranet.
 
 It allows any of the following combinations:
 
-* PHP 5.4, PHP 5.5, PHP 5.6, PHP 7.0 and PHP 7.1
+* PHP 5.4, PHP 5.5, PHP 5.6, PHP 7.0, PHP 7.1 and HHVM
 * MySQL 5.5, MySQL 5.6, MySQL 5.7, MariaDB 5 and MariaDB 10
 * Apache 2.2, Apache 2.4, Nginx stable and Nginx mainline
 * And more to come...
