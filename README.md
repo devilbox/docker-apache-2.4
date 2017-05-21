@@ -103,7 +103,7 @@ $ docker run -d \
 $ docker run -d \
     -p 9000:9000 \
     -v ~/my-host-www:/var/www/html \
-	-e FORWARD_PORTS_TO_LOCALHOST=3306:mysql:3306 \
+    -e FORWARD_PORTS_TO_LOCALHOST=3306:mysql:3306 \
     --name php \
     cytopia/php-fpm-5.6
 
