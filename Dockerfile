@@ -13,7 +13,7 @@ LABEL \
 	image="apache-2.4" \
 	vendor="cytopia" \
 	license="MIT" \
-	build-date="2017-05-21"
+	build-date="2017-06-30"
 
 
 # Copy scripts
