@@ -42,6 +42,13 @@ DATE="$( date '+%Y-%m-%d' )"
 
 
 ###
+### Update Base
+###
+MY_BASE="$( grep 'FROM[[:space:]].*:.*' "${CWD}/Dockerfile" | sed 's/FROM\s*//g' )"
+run "docker pull ${MY_BASE}"
+
+
+###
 ### Build
 ###
 
@@ -61,6 +68,7 @@ INFO="$( docker exec my_tmp_${NAME} httpd -V | grep -E '^Server.*(version|built|
 docker stop "$(docker ps | grep "my_tmp_${NAME}" | awk '{print $1}')"
 docker rm "my_tmp_${NAME}"
 
+INFO="$( echo "${INFO}" | sed 's/\s$//g' )"        # remove trailing space
 echo "${INFO}"
 
 sed -i'' '/##[[:space:]]Version/q' "${CWD}/README.md"
