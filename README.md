@@ -18,7 +18,7 @@ Find me on **[Docker Hub](https://hub.docker.com/r/cytopia/apache-2.4)**:
 
 [![cytopia/apache-2.4](http://dockeri.co/image/cytopia/apache-2.4)](https://hub.docker.com/r/cytopia/apache-2.4/)
 
-<small>**Latest build:** 2017-09-27</small>
+<small>**Latest build:** 2017-09-28</small>
 
 ----
 
@@ -150,7 +150,7 @@ This Docker container adds a lot of injectables in order to customize it to your
 
 | Docker              | Description |
 |---------------------|-------------|
-| /etc/apache-2.4.d   | Mount this directory to add outside configuration files (`*.conf`) to Apache |
+| /etc/httpd-custom.d | Mount this directory to add outside configuration files (`*.conf`) to Apache |
 | /var/www/default    | Apache default virtual host base path (contains by default `htdocs/` and `cfg/` |
 | /shared/httpd       | Apache mass virtual host root directory |
 

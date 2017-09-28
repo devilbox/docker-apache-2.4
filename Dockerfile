@@ -2,15 +2,15 @@ FROM httpd:2.4
 MAINTAINER "cytopia" <cytopia@everythingcli.org>
 
 
-##
-## Labels
-##
+###
+### Labels
+###
 LABEL \
 	name="cytopia's Apache 2.4 Image" \
 	image="apache-2.4" \
 	vendor="cytopia" \
 	license="MIT" \
-	build-date="2017-09-27"
+	build-date="2017-09-28"
 
 
 ###
@@ -20,6 +20,7 @@ LABEL \
 # required packages
 RUN set -x \
 	&& apt-get update \
+	&& apt-get upgrade -y \
 	&& apt-get install --no-install-recommends --no-install-suggests -y \
 		make \
 		python-yaml \
@@ -48,6 +49,7 @@ RUN set -x \
 	&& apt-get remove -y \
 		make \
 		wget \
+	&& apt-get autoremove -y \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& apt-get purge -y --auto-remove
 
@@ -58,17 +60,17 @@ RUN set -x \
 		echo "LoadModule proxy_module modules/mod_proxy.so"; \
 		echo "LoadModule proxy_fcgi_module modules/mod_proxy_fcgi.so"; \
 		echo "LoadModule rewrite_module modules/mod_rewrite.so"; \
-		echo "IncludeOptional /etc/httpd/conf.d/*.conf"; \
-		echo "IncludeOptional /etc/httpd/custom.d/*.conf"; \
-		echo "IncludeOptional /etc/apache-2.4.d/*.conf"; \
 		echo "Include conf/extra/httpd-default.conf"; \
+		echo "IncludeOptional /etc/httpd-custom.d/*.conf"; \
+		echo "IncludeOptional /etc/httpd/conf.d/*.conf"; \
+		echo "IncludeOptional /etc/httpd/vhost.d/*.conf"; \
 	) >> /usr/local/apache2/conf/httpd.conf
 
 # create directories
 RUN set -x \
-	&& mkdir -p /etc/apache-2.4.d \
+	&& mkdir -p /etc/httpd-custom.d \
 	&& mkdir -p /etc/httpd/conf.d \
-	&& mkdir -p /etc/httpd/custom.d \
+	&& mkdir -p /etc/httpd/vhost.d \
 	&& mkdir -p /var/www/default/htdocs \
 	&& mkdir -p /shared/httpd \
 	&& chmod 0775 /shared/httpd \
