@@ -18,7 +18,7 @@ Find me on **[Docker Hub](https://hub.docker.com/r/cytopia/apache-2.4)**:
 
 [![cytopia/apache-2.4](http://dockeri.co/image/cytopia/apache-2.4)](https://hub.docker.com/r/cytopia/apache-2.4/)
 
-<small>**Latest build:** 2017-09-28</small>
+<small>**Latest build:** 2017-09-30</small>
 
 ----
 
