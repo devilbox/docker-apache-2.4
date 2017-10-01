@@ -8,9 +8,9 @@ MAINTAINER "cytopia" <cytopia@everythingcli.org>
 LABEL \
 	name="cytopia's Apache 2.4 Image" \
 	image="apache-2.4" \
-	vendor="cytopia" \
+	vendor="devilbox" \
 	license="MIT" \
-	build-date="2017-09-30"
+	build-date="2017-10-01"
 
 
 ###
