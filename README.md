@@ -1,24 +1,22 @@
-# Apache 2.4 Docker
+# Apache 2.4 Docker image
 
-[![Devilbox](https://raw.githubusercontent.com/cytopia/devilbox/master/.devilbox/www/htdocs/assets/img/devilbox_80.png)](https://github.com/cytopia/devilbox)
+[![Build Status](https://travis-ci.org/devilbox/docker-apache-2.4.svg?branch=master)](https://travis-ci.org/devilbox/docker-apache-2.4)
+[![release](https://img.shields.io/github/release/devilbox/docker-apache-2.4.svg)](https://github.com/devilbox/docker-apache-2.4/releases)
+[![Join the chat at https://gitter.im/devilbox/Lobby](https://badges.gitter.im/devilbox/Lobby.svg)](https://gitter.im/devilbox/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Github](https://img.shields.io/badge/github-docker--apache--2.4-red.svg)](https://github.com/devilbox/docker-apache-2.4)
+[![](https://images.microbadger.com/badges/license/devilbox/apache-2.4.svg)](https://microbadger.com/images/devilbox/apache-2.4 "apache-2.4")
 
-<sub>This Docker image is part of the **[devilbox](https://github.com/cytopia/devilbox)**.</sub>
+**[devilbox/docker-apache-2.4](https://github.com/devilbox/docker-apache-2.4)**
+
+This image is based on the official **[Apache 2.4](https://hub.docker.com/_/httpd)** Docker image and extends it with the ability to have **virtual hosts created automatically**, as well as **adding SSL certificates** when creating new directories. For that to work, it integrates two tools that will take care about the whole process: **[watcherd](https://github.com/devilbox/watcherd)** and **[vhost-gen](https://github.com/devilbox/vhost-gen)**.
+
+From a users perspective, you mount your local project directory into the container under `/shared/httpd`. Any directory then created in your local project directory wil spawn a new virtual host by the same name. Additional settings such as custom server names, PHP-FPM or even different Apache templates per project are supported as well.
+
+| Docker Hub | Upstream Project |
+|------------|------------------|
+| <a href="https://hub.docker.com/r/devilbox/apache-2.4"><img height="82px" src="http://dockeri.co/image/devilbox/apache-2.4" /></a> | <a href="https://github.com/cytopia/devilbox" ><img height="82px" src="https://raw.githubusercontent.com/devilbox/artwork/master/submissions_banner/cytopia/01/png/banner_256_trans.png" /></a> |
 
 **[Apache 2.2](https://github.com/devilbox/docker-apache-2.2) | Apache 2.4 | [Nginx stable](https://github.com/devilbox/docker-nginx-stable) | [Nginx mainline](https://github.com/devilbox/docker-nginx-mainline)**
-
-[![Build Status](https://travis-ci.org/devilbox/docker-apache-2.4.svg?branch=master)](https://travis-ci.org/devilbox/docker-apache-2.4) [![](https://images.microbadger.com/badges/version/devilbox/apache-2.4.svg)](https://microbadger.com/images/devilbox/apache-2.4 "apache-2.4") [![](https://images.microbadger.com/badges/image/devilbox/apache-2.4.svg)](https://microbadger.com/images/devilbox/apache-2.4 "apache-2.4") [![](https://images.microbadger.com/badges/license/devilbox/apache-2.4.svg)](https://microbadger.com/images/devilbox/apache-2.4 "apache-2.4")
-
-This image is based on the official **[Apache 2.4](https://hub.docker.com/_/httpd)** Docker image and extends it with the ability to have **virtual hosts created automatically** when adding new directories. For that to work, it integrates two tools that will take care about the whole process: **[watcherd](https://github.com/devilbox/watcherd)** and **[vhost-gen](https://github.com/devilbox/vhost-gen)**.
-
-From a users perspective, you mount your local project directory into the Docker under `/shared/httpd`. Any directory then created in your local project directory wil spawn a new virtual host by the same name. Additional settings such as custom server names, PHP-FPM or even different Apache templates per project are supported as well.
-
-----
-
-Find me on **[Docker Hub](https://hub.docker.com/r/devilbox/apache-2.4)**:
-
-[![devilbox/apache-2.4](http://dockeri.co/image/devilbox/apache-2.4)](https://hub.docker.com/r/devilbox/apache-2.4/)
-
-<small>**Latest build:** This container is built every night by [travis-ci](https://travis-ci.org/devilbox/docker-apache-2.4).</small>
 
 ----
 
