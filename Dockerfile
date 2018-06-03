@@ -25,7 +25,7 @@ ENV RUN_DEPS \
 ENV MY_USER=daemon
 ENV MY_GROUP=daemon
 ENV HTTPD_START="httpd-foreground"
-ENV HTTPD_RELOAD="/usr/local/apache2/bin/httpd -k restart"
+ENV HTTPD_RELOAD="/usr/local/apache2/bin/httpd -k stop"
 
 
 ###
