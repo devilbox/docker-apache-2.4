@@ -86,6 +86,8 @@ RUN set -x \
 		echo "SSLPassPhraseDialog  builtin"; \
 		echo "SSLSessionCache        \"shmcb:/usr/local/apache2/logs/ssl_scache(512000)\""; \
 		echo "SSLSessionCacheTimeout  300"; \
+		\
+		echo "HTTPProtocolOptions unsafe"; \
 	) >> /usr/local/apache2/conf/httpd.conf
 
 # create directories
