@@ -35,7 +35,6 @@ ENV HTTPD_RELOAD="/usr/local/apache2/bin/httpd -k stop"
 # required packages
 RUN set -x \
 	&& apt-get update \
-	&& apt-get upgrade -y \
 	&& apt-get install --no-install-recommends --no-install-suggests -y \
 		${BUILD_DEPS} \
 		${RUN_DEPS} \
