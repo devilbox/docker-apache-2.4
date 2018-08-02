@@ -1,11 +1,16 @@
 FROM httpd:2.4
 MAINTAINER "cytopia" <cytopia@everythingcli.org>
 
+LABEL \
+	name="cytopia's apache 2.4 image" \
+	image="devilbox/apache-2.4" \
+	vendor="devilbox" \
+	license="MIT"
 
 ###
 ### Build arguments
 ###
-ARG VHOST_GEN_GIT_REF=0.7
+ARG VHOST_GEN_GIT_REF=0.10
 ARG CERT_GEN_GIT_REF=0.2
 
 ENV BUILD_DEPS \
