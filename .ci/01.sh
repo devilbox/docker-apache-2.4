@@ -5,6 +5,7 @@ set -u
 set -o pipefail
 
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
+DOCKER_NAME="${1}"
 
 
 ###
