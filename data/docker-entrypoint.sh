@@ -79,6 +79,7 @@ export_docker_logs "DOCKER_LOGS" "${DEBUG_LEVEL}"
 ###
 ### Ensure PHP-FPM variables are exported
 ###
+export_php_fpm_compat "COMPAT" "${DEBUG_LEVEL}"
 export_php_fpm_enable "PHP_FPM_ENABLE" "${DEBUG_LEVEL}"
 export_php_fpm_server_addr "PHP_FPM_SERVER_ADDR" "${DEBUG_LEVEL}"
 export_php_fpm_server_port "PHP_FPM_SERVER_PORT" "${DEBUG_LEVEL}"
@@ -121,6 +122,17 @@ fi
 #############################################################
 ## vhost-gen Configuration
 #############################################################
+
+###
+### Ensure PHP 5.2 conmpat mode is applied
+###
+if [ "${COMPAT}" = "1" ]; then
+	# Replace current value 'FPM' with 'GENERIC'
+	log "info" "Setting PHP 5.2 compat mode" "${DEBUG_LEVEL}"
+	sed -i'' 's|\(ProxyFCGIBackendType\).*$|\1 GENERIC|g' /etc/vhost-gen/templates/apache24.yml
+else
+	log "info" "Disabling PHP 5.2 compat mode" "${DEBUG_LEVEL}"
+fi
 
 ###
 ### Enable and configure PHP-FPM
