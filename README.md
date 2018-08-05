@@ -162,6 +162,7 @@ This Docker container adds a lot of injectables in order to customize it to your
 | /etc/httpd-custom.d | Mount this directory to add outside configuration files (`*.conf`) to Apache |
 | /var/www/default    | Apache default virtual host base path (contains by default `htdocs/` and `cfg/` |
 | /shared/httpd       | Apache mass virtual host root directory |
+| /etc/vhost-gen.d    | [vhost-gen](https://github.com/devilbox/vhost-gen) directory for custom templates. Copy and customize [apache24.yml](https://github.com/devilbox/vhost-gen/blob/master/etc/templates/apache24.yml) into this mounted directory for global vhost customizations |
 
 
 #### Default ports
