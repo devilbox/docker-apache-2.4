@@ -83,6 +83,7 @@ export_php_fpm_compat "COMPAT" "${DEBUG_LEVEL}"
 export_php_fpm_enable "PHP_FPM_ENABLE" "${DEBUG_LEVEL}"
 export_php_fpm_server_addr "PHP_FPM_SERVER_ADDR" "${DEBUG_LEVEL}"
 export_php_fpm_server_port "PHP_FPM_SERVER_PORT" "${DEBUG_LEVEL}"
+export_php_fpm_timeout "PHP_FPM_TIMEOUT" "${DEBUG_LEVEL}"
 
 
 ###
@@ -137,8 +138,8 @@ fi
 ###
 ### Enable and configure PHP-FPM
 ###
-vhost_gen_php_fpm "${PHP_FPM_ENABLE}" "${PHP_FPM_SERVER_ADDR}" "${PHP_FPM_SERVER_PORT}" "/etc/vhost-gen/main.yml" "${DEBUG_LEVEL}"
-vhost_gen_php_fpm "${PHP_FPM_ENABLE}" "${PHP_FPM_SERVER_ADDR}" "${PHP_FPM_SERVER_PORT}" "/etc/vhost-gen/mass.yml" "${DEBUG_LEVEL}"
+vhost_gen_php_fpm "${PHP_FPM_ENABLE}" "${PHP_FPM_SERVER_ADDR}" "${PHP_FPM_SERVER_PORT}" "${PHP_FPM_TIMEOUT}" "/etc/vhost-gen/main.yml" "${DEBUG_LEVEL}"
+vhost_gen_php_fpm "${PHP_FPM_ENABLE}" "${PHP_FPM_SERVER_ADDR}" "${PHP_FPM_SERVER_PORT}" "${PHP_FPM_TIMEOUT}" "/etc/vhost-gen/mass.yml" "${DEBUG_LEVEL}"
 
 
 ###
