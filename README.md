@@ -258,11 +258,11 @@ It allows any of the following combinations:
 ## Version
 
 ```
-Server version: Apache/2.4.34 (Unix)
-Server built:   Jul 31 2018 16:48:40
-Server's Module Magic Number: 20120211:79
-Server loaded:  APR 1.5.1, APR-UTIL 1.5.4
-Compiled using: APR 1.5.1, APR-UTIL 1.5.4
+Server version: Apache/2.4.37 (Unix)
+Server built:   Nov 15 2018 23:52:35
+Server's Module Magic Number: 20120211:83
+Server loaded:  APR 1.5.2, APR-UTIL 1.5.4
+Compiled using: APR 1.5.2, APR-UTIL 1.5.4
 Architecture:   64-bit
 Server MPM:     event
   threaded:     yes (fixed thread count)
