@@ -72,6 +72,7 @@ RUN set -x \
 	&& ( \
 		echo "ServerName localhost"; \
 		echo "LoadModule proxy_module modules/mod_proxy.so"; \
+		echo "LoadModule proxy_http_module modules/mod_proxy_http.so"; \
 		echo "LoadModule proxy_fcgi_module modules/mod_proxy_fcgi.so"; \
 		echo "LoadModule rewrite_module modules/mod_rewrite.so"; \
 		echo "Include conf/extra/httpd-default.conf"; \

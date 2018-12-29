@@ -255,11 +255,12 @@ It allows any of the following combinations:
 * Apache 2.2, Apache 2.4, Nginx stable and Nginx mainline
 * And more to come...
 
+
 ## Version
 
 ```
 Server version: Apache/2.4.37 (Unix)
-Server built:   Nov 15 2018 23:52:35
+Server built:   Dec 29 2018 02:11:11
 Server's Module Magic Number: 20120211:83
 Server loaded:  APR 1.5.2, APR-UTIL 1.5.4
 Compiled using: APR 1.5.2, APR-UTIL 1.5.4
