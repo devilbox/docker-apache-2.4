@@ -12,6 +12,8 @@ This image is based on the official **[Apache 2.4](https://hub.docker.com/_/http
 
 From a users perspective, you mount your local project directory into the container under `/shared/httpd`. Any directory then created in your local project directory wil spawn a new virtual host by the same name. Additional settings such as custom server names, PHP-FPM or even different Apache templates per project are supported as well.
 
+**HTTP/2 is enabled by default for all SSL connections.**
+
 | Docker Hub | Upstream Project |
 |------------|------------------|
 | <a href="https://hub.docker.com/r/devilbox/apache-2.4"><img height="82px" src="http://dockeri.co/image/devilbox/apache-2.4" /></a> | <a href="https://github.com/cytopia/devilbox" ><img height="82px" src="https://raw.githubusercontent.com/devilbox/artwork/master/submissions_banner/cytopia/01/png/banner_256_trans.png" /></a> |
@@ -250,7 +252,7 @@ It offers pre-configured mass virtual hosts and an intranet.
 
 It allows any of the following combinations:
 
-* PHP 5.4, PHP 5.5, PHP 5.6, PHP 7.0, PHP 7.1 and HHVM
+* PHP 5.2, 5.3, 5.4, PHP 5.5, PHP 5.6, PHP 7.0, PHP 7.1, 7.2, 7.3 and 7.4
 * MySQL 5.5, MySQL 5.6, MySQL 5.7, MariaDB 5 and MariaDB 10
 * Apache 2.2, Apache 2.4, Nginx stable and Nginx mainline
 * And more to come...

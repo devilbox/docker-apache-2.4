@@ -10,7 +10,7 @@ LABEL \
 ###
 ### Build arguments
 ###
-ARG VHOST_GEN_GIT_REF=0.12
+ARG VHOST_GEN_GIT_REF=0.13
 ARG CERT_GEN_GIT_REF=0.2
 
 ENV BUILD_DEPS \
@@ -71,10 +71,14 @@ RUN set -x \
 RUN set -x \
 	&& ( \
 		echo "ServerName localhost"; \
+		\
+		echo "LoadModule http2_module modules/mod_http2.so"; \
 		echo "LoadModule proxy_module modules/mod_proxy.so"; \
 		echo "LoadModule proxy_http_module modules/mod_proxy_http.so"; \
+		echo "LoadModule proxy_http2_module modules/mod_proxy_http2.so"; \
 		echo "LoadModule proxy_fcgi_module modules/mod_proxy_fcgi.so"; \
 		echo "LoadModule rewrite_module modules/mod_rewrite.so"; \
+		\
 		echo "Include conf/extra/httpd-default.conf"; \
 		echo "IncludeOptional /etc/httpd-custom.d/*.conf"; \
 		echo "IncludeOptional /etc/httpd/conf.d/*.conf"; \
