@@ -141,7 +141,7 @@ fi
 ###
 ### Copy custom vhost-gen template
 ###
-vhost_gen_copy_custom_template "${VHOST_GEN_CUST_DIR}" "${VHOST_GEN_DIR}" "apache22.yml" "${DEBUG_LEVEL}"
+vhost_gen_copy_custom_template "${VHOST_GEN_CUST_DIR}" "${VHOST_GEN_DIR}" "apache24.yml" "${DEBUG_LEVEL}"
 
 
 ###
