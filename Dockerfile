@@ -7,6 +7,7 @@ LABEL \
 	vendor="devilbox" \
 	license="MIT"
 
+
 ###
 ### Build arguments
 ###
@@ -34,10 +35,8 @@ ENV HTTPD_RELOAD="/usr/local/apache2/bin/httpd -k stop"
 
 
 ###
-### Installation
+### Install required packages
 ###
-
-# required packages
 RUN set -x \
 	&& apt-get update \
 	&& apt-get install --no-install-recommends --no-install-suggests -y \
@@ -67,8 +66,12 @@ RUN set -x \
 		${BUILD_DEPS} \
 	&& rm -rf /var/lib/apt/lists/*
 
-# Add custom config directive to httpd server
+
+###
+### Configure Apache
+###
 RUN set -x \
+	&& APACHE_VERSION="$( httpd -V | grep -Eo 'Apache/[.0-9]+' | awk -F'/' '{print $2}' )" \
 	&& ( \
 		echo "ServerName localhost"; \
 		\
@@ -96,10 +99,23 @@ RUN set -x \
 		echo "SSLSessionCache        \"shmcb:/usr/local/apache2/logs/ssl_scache(512000)\""; \
 		echo "SSLSessionCacheTimeout  300"; \
 		\
+		echo "<If \"%{THE_REQUEST} =~ m#^.*HTTP/1\.0\$#\">"; \
+		echo "    Header always set Via \"1.0 %{HOSTNAME}e (apache/${APACHE_VERSION})\""; \
+		echo "</If>"; \
+		echo "<If \"%{THE_REQUEST} =~ m#^.*HTTP/1\.1\$#\">"; \
+		echo "    Header always set Via \"1.1 %{HOSTNAME}e (apache/${APACHE_VERSION})\""; \
+		echo "</If>"; \
+		echo "<If \"%{THE_REQUEST} =~ m#^.*HTTP/2\.0\$#\">"; \
+		echo "    Header always set Via \"2.0 %{HOSTNAME}e (apache/${APACHE_VERSION})\""; \
+		echo "</If>"; \
+		\
 		echo "HTTPProtocolOptions unsafe"; \
 	) >> /usr/local/apache2/conf/httpd.conf
 
-# create directories
+
+###
+### Create directories
+###
 RUN set -x \
 	&& mkdir -p /etc/httpd-custom.d \
 	&& mkdir -p /etc/httpd/conf.d \
