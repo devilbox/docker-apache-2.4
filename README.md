@@ -246,13 +246,13 @@ $ docker run -d \
 
 #### 4. Ultimate pre-configured docker-compose setup
 
-Have a look at the **[devilbox](https://github.com/cytopia/devilbox)** for a fully-customizable docker-compose variant.
+Have a look at the **[Devilbox](https://github.com/cytopia/devilbox)** for a fully-customizable docker-compose variant.
 
 It offers pre-configured mass virtual hosts and an intranet.
 
 It allows any of the following combinations:
 
-* PHP 5.2, 5.3, 5.4, PHP 5.5, PHP 5.6, PHP 7.0, PHP 7.1, 7.2, 7.3 and 7.4
+* PHP 5.2, PHP 5.3, PHP 5.4, PHP 5.5, PHP 5.6, PHP 7.0, PHP 7.1, PHP 7.2, PHP 7.3,  PHP 7.4 and PHP 8.0
 * MySQL 5.5, MySQL 5.6, MySQL 5.7, MariaDB 5 and MariaDB 10
 * Apache 2.2, Apache 2.4, Nginx stable and Nginx mainline
 * And more to come...
@@ -261,8 +261,8 @@ It allows any of the following combinations:
 ## Version
 
 ```
-Server version: Apache/2.4.37 (Unix)
-Server built:   Dec 29 2018 02:11:11
+Server version: Apache/2.4.38 (Unix)
+Server built:   Feb 12 2019 21:20:23
 Server's Module Magic Number: 20120211:83
 Server loaded:  APR 1.5.2, APR-UTIL 1.5.4
 Compiled using: APR 1.5.2, APR-UTIL 1.5.4
