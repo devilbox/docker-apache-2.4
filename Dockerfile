@@ -12,7 +12,7 @@ LABEL \
 ### Build arguments
 ###
 ARG VHOST_GEN_GIT_REF=0.15
-ARG CERT_GEN_GIT_REF=0.2
+ARG CERT_GEN_GIT_REF=0.3.1
 
 ENV BUILD_DEPS \
 	git \
@@ -52,8 +52,8 @@ RUN set -x \
 	&& rm -rf vhost*gen* \
 	\
 	# Install cert-gen
-	&& wget --no-check-certificate -O /usr/bin/ca-gen https://raw.githubusercontent.com/devilbox/cert-gen/${CERT_GEN_GIT_REF}/bin/ca-gen \
-	&& wget --no-check-certificate -O /usr/bin/cert-gen https://raw.githubusercontent.com/devilbox/cert-gen/${CERT_GEN_GIT_REF}/bin/cert-gen \
+	&& wget --no-check-certificate -O /usr/bin/ca-gen https://raw.githubusercontent.com/tmort/cert-gen/${CERT_GEN_GIT_REF}/bin/ca-gen \
+	&& wget --no-check-certificate -O /usr/bin/cert-gen https://raw.githubusercontent.com/tmort/cert-gen/${CERT_GEN_GIT_REF}/bin/cert-gen \
 	&& chmod +x /usr/bin/ca-gen \
 	&& chmod +x /usr/bin/cert-gen \
 	\
