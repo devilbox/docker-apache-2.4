@@ -1,10 +1,10 @@
 FROM httpd:2.4
-MAINTAINER "cytopia" <cytopia@everythingcli.org>
+MAINTAINER "sixfoot3" <tom@sixfoot3.com>
 
 LABEL \
-	name="cytopia's apache 2.4 image" \
-	image="devilbox/apache-2.4" \
-	vendor="devilbox" \
+	name="cytopia's apache 2.4 image with catalina edits" \
+	image="tmort/apache-2.4" \
+	vendor="sixfoot3" \
 	license="MIT"
 
 
