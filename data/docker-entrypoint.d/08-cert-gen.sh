@@ -17,6 +17,7 @@ cert_gen_generate_ca() {
 	local crt="${2}"
 	local verbose="${3}"
 	local debug="${4}"
+	local def_days="${5:-}"
 
 	# Create directories
 	if [ ! -d "$( dirname "${key}" )" ]; then
@@ -33,9 +34,16 @@ cert_gen_generate_ca() {
 		verbose=""
 	fi
 
+	# user defined custom days
+	if [ -z "${def_days}"  ]; then
+		def_days="820"
+	else
+		def_days="${5}"
+	fi
+
 	# Generate CA if it does not exist yet
 	if [ ! -f "${key}" ] || [ ! -f "${crt}" ]; then
-		run "ca-gen ${verbose} -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox -n 'Devilbox Root CA' -e 'cytopia@devilbox.org' ${key} ${crt}" "${DEBUG_LEVEL}"
+		run "ca-gen ${verbose} -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox -n 'Devilbox Root CA' -e 'cytopia@devilbox.org' -d ${def_days} ${key} ${crt}" "${DEBUG_LEVEL}"
 	fi
 }
 
@@ -54,6 +62,7 @@ cert_gen_generate_cert() {
 	local domains="${8}"
 	local verbose="${9}"
 	local debug="${10}"
+	local def_days="${11:-}"
 
 	# If not enabled, skip SSL certificate eneration
 	if [ "${enable}" != "1" ]; then
@@ -83,6 +92,13 @@ cert_gen_generate_cert() {
 		verbose=""
 	fi
 
+	# user defined custom days
+	if [ -z "${def_days}"  ]; then
+		def_days="820"
+	else
+		def_days="${11}"
+	fi
+
 	# Get domain name and alt_names
 	cn=
 	alt_names=
@@ -98,5 +114,5 @@ cert_gen_generate_cert() {
 	done
 	alt_names="$( echo "${alt_names}" | xargs )" # tim
 
-	run "cert-gen ${verbose} -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox -n '${cn}' -e 'admin@${cn}' -a '${alt_names}' ${ca_key} ${ca_crt} ${key} ${csr} ${crt}" "${debug}"
+	run "cert-gen ${verbose} -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox -n '${cn}' -e 'admin@${cn}' -a '${alt_names}' -d ${def_days} ${ca_key} ${ca_crt} ${key} ${csr} ${crt}" "${debug}"
 }
