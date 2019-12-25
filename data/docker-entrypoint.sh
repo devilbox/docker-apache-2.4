@@ -55,6 +55,13 @@ log "info" "Runtime debug: ${DEBUG_RUNTIME}" "${DEBUG_LEVEL}"
 
 
 ###
+### Does user have custom SSL validity settings?
+###
+MAIN_VHOST_SSL_VALIDITY_PERIOD="$( env_get "MAIN_VHOST_SSL_VALIDITY_PERIOD" "803" )"
+log "info" "SSL Generation Validity period: ${MAIN_VHOST_SSL_VALIDITY_PERIOD}" "${DEBUG_LEVEL}"
+
+
+###
 ### Change uid/gid
 ###
 set_uid "NEW_UID" "${MY_USER}"  "${DEBUG_LEVEL}"
@@ -201,7 +208,7 @@ vhost_gen_mass_vhost_tld \
 ###
 ### Create Certificate Signing request
 ###
-cert_gen_generate_ca "${CA_KEY}" "${CA_CRT}" "${DEBUG_RUNTIME}" "${DEBUG_LEVEL}"
+cert_gen_generate_ca "${CA_KEY}" "${CA_CRT}" "${DEBUG_RUNTIME}" "${DEBUG_LEVEL}" "${MAIN_VHOST_SSL_VALIDITY_PERIOD}"
 
 
 ###
@@ -217,7 +224,8 @@ cert_gen_generate_cert \
 	"/etc/httpd/cert/main/localhost.crt" \
 	"${MAIN_VHOST_SSL_CN}" \
 	"${DEBUG_RUNTIME}" \
-	"${DEBUG_LEVEL}"
+	"${DEBUG_LEVEL}" \
+	"${MAIN_VHOST_SSL_VALIDITY_PERIOD}"
 
 
 
@@ -244,7 +252,7 @@ if [ "${MASS_VHOST_ENABLE}" -eq "1" ]; then
 	fi
 
 	# Create watcherd sub commands
-	watcherd_add="create-vhost.sh '%%p' '%%n' '${MASS_VHOST_TLD}' '%%p/${MASS_VHOST_TPL}/' '${CA_KEY}' '${CA_CRT}' '1' '${verbose}'"
+	watcherd_add="create-vhost.sh '%%p' '%%n' '${MASS_VHOST_TLD}' '%%p/${MASS_VHOST_TPL}/' '${CA_KEY}' '${CA_CRT}' '1' '${MAIN_VHOST_SSL_VALIDITY_PERIOD}' '${verbose}'"
 	watcherd_del="rm /etc/httpd/vhost.d/%%n.conf"
 	watcherd_tri="${HTTPD_RELOAD}"
 

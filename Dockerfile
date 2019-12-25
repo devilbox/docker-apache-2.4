@@ -7,7 +7,6 @@ LABEL \
 	vendor="devilbox" \
 	license="MIT"
 
-
 ###
 ### Build arguments
 ###
