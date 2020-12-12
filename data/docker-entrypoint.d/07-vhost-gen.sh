@@ -92,7 +92,7 @@ vhost_gen_generate_main_vhost() {
 		else
 			verbose=""
 		fi
-		run "vhost_gen.py -n localhost -p ${docroot} -c ${config} -o ${template} ${verbose} -d -s -m ${ssl_type}" "${debug}"
+		run "vhost-gen -n localhost -p ${docroot} -c ${config} -o ${template} ${verbose} -d -s -m ${ssl_type}" "${debug}"
 	fi
 }
 
