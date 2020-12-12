@@ -10,7 +10,7 @@ IMAGE="${1}"
 ###
 ### Retrieve information afterwards and Update README.md
 ###
-INFO="$( docker run -it --rm --entrypoint=httpd ${IMAGE} -V 2>&1 | tr -d "\r" )"
+INFO="$( docker run --rm --entrypoint=httpd "${IMAGE}" -V 2>&1 | tr -d '\r' )"
 
 echo "${INFO}"
 sed -i'' '/##[[:space:]]Version/q' "${CWD}/README.md"
