@@ -264,9 +264,9 @@ It allows any of the following combinations:
 ## Version
 
 ```
-Server version: Apache/2.4.41 (Unix)
-Server built:   Nov 23 2019 00:34:14
-Server's Module Magic Number: 20120211:88
+Server version: Apache/2.4.46 (Unix)
+Server built:   Dec 11 2020 12:17:58
+Server's Module Magic Number: 20120211:93
 Server loaded:  APR 1.6.5, APR-UTIL 1.6.1
 Compiled using: APR 1.6.5, APR-UTIL 1.6.1
 Architecture:   64-bit
