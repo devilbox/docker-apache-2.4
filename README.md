@@ -264,11 +264,11 @@ It allows any of the following combinations:
 ## Version
 
 ```
-Server version: Apache/2.4.46 (Unix)
-Server built:   Dec 11 2020 12:17:58
-Server's Module Magic Number: 20120211:93
-Server loaded:  APR 1.6.5, APR-UTIL 1.6.1
-Compiled using: APR 1.6.5, APR-UTIL 1.6.1
+Server version: Apache/2.4.52 (Unix)
+Server built:   Dec 21 2021 01:34:45
+Server's Module Magic Number: 20120211:121
+Server loaded:  APR 1.7.0, APR-UTIL 1.6.1
+Compiled using: APR 1.7.0, APR-UTIL 1.6.1
 Architecture:   64-bit
 Server MPM:     event
   threaded:     yes (fixed thread count)
@@ -277,7 +277,7 @@ Server compiled with....
  -D APR_HAS_SENDFILE
  -D APR_HAS_MMAP
  -D APR_HAVE_IPV6 (IPv4-mapped addresses enabled)
- -D APR_USE_SYSVSEM_SERIALIZE
+ -D APR_USE_PROC_PTHREAD_SERIALIZE
  -D APR_USE_PTHREAD_SERIALIZE
  -D SINGLE_LISTEN_UNSERIALIZED_ACCEPT
  -D APR_HAS_OTHER_CHILD
