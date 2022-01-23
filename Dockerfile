@@ -22,15 +22,15 @@ ENV BUILD_DEPS \
 
 ENV RUN_DEPS \
 	ca-certificates \
-	python-yaml \
+	python3-yaml \
 	supervisor
 
 
 ###
 ### Runtime arguments
 ###
-ENV MY_USER=daemon
-ENV MY_GROUP=daemon
+ENV MY_USER=www-data
+ENV MY_GROUP=www-data
 ENV HTTPD_START="httpd-foreground"
 ENV HTTPD_RELOAD="/usr/local/apache2/bin/httpd -k stop"
 
@@ -125,6 +125,13 @@ RUN set -x \
 	&& mkdir -p /shared/httpd \
 	&& chmod 0775 /shared/httpd \
 	&& chown ${MY_USER}:${MY_GROUP} /shared/httpd
+
+
+###
+### Symlink Python3 to Python
+###
+RUN set -x \
+	&& ln -sf /usr/bin/python3 /usr/bin/python
 
 
 ###
