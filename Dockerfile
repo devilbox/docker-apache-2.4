@@ -29,8 +29,8 @@ ENV RUN_DEPS \
 ###
 ### Runtime arguments
 ###
-ENV MY_USER=daemon
-ENV MY_GROUP=daemon
+ENV MY_USER=www-data
+ENV MY_GROUP=www-data
 ENV HTTPD_START="httpd-foreground"
 ENV HTTPD_RELOAD="/usr/local/apache2/bin/httpd -k stop"
 
