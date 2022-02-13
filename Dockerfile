@@ -38,16 +38,16 @@ ENV HTTPD_RELOAD="/usr/local/apache2/bin/httpd -k stop"
 ###
 ### Install required packages
 ###
-RUN set -x \
+RUN set -eux \
 	&& apt-get update \
 	&& apt-get install --no-install-recommends --no-install-suggests -y \
 		${BUILD_DEPS} \
 		${RUN_DEPS} \
 	\
 	# Install vhost-gen
-	&& git clone https://github.com/devilbox/vhost-gen \
-	&& cd vhost-gen \
-	&& git checkout "${VHOST_GEN_GIT_REF}" \
+	&& wget --no-check-certificate -O vhost-gen.tar.gz "https://github.com/devilbox/vhost-gen/archive/refs/tags/${VHOST_GEN_GIT_REF}.tar.gz" \
+	&& tar xvfz vhost-gen.tar.gz \
+	&& cd "vhost-gen-${VHOST_GEN_GIT_REF}" \
 	&& make install \
 	&& cd .. \
 	&& rm -rf vhost*gen* \
@@ -63,7 +63,7 @@ RUN set -x \
 	&& chmod +x /usr/bin/watcherd \
 	\
 	# Clean-up
-	&& apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $fetchDeps \
+	&& apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
 		${BUILD_DEPS} \
 	&& rm -rf /var/lib/apt/lists/*
 
@@ -117,7 +117,7 @@ RUN set -x \
 ###
 ### Create directories
 ###
-RUN set -x \
+RUN set -eux \
 	&& mkdir -p /etc/httpd-custom.d \
 	&& mkdir -p /etc/httpd/conf.d \
 	&& mkdir -p /etc/httpd/vhost.d \
@@ -130,7 +130,7 @@ RUN set -x \
 ###
 ### Symlink Python3 to Python
 ###
-RUN set -x \
+RUN set -eux \
 	&& ln -sf /usr/bin/python3 /usr/bin/python
 
 
