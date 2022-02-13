@@ -16,7 +16,6 @@ ARG WATCHERD_GIT_REF=v1.0.2
 ARG CERT_GEN_GIT_REF=0.7
 
 ENV BUILD_DEPS \
-	git \
 	make \
 	wget
 
@@ -71,7 +70,7 @@ RUN set -eux \
 ###
 ### Configure Apache
 ###
-RUN set -x \
+RUN set -eux \
 	&& APACHE_VERSION="$( httpd -V | grep -Eo 'Apache/[.0-9]+' | awk -F'/' '{print $2}' )" \
 	&& ( \
 		echo "ServerName localhost"; \
@@ -111,6 +110,10 @@ RUN set -x \
 		echo "</If>"; \
 		\
 		echo "HTTPProtocolOptions unsafe"; \
+		\
+		# https://github.com/cytopia/devilbox/issues/862
+		echo "Mutex sem"; \
+		\
 	) >> /usr/local/apache2/conf/httpd.conf
 
 
