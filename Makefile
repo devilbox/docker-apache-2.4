@@ -26,7 +26,7 @@ TAG        = latest
 # Makefile.docker overwrites
 NAME       = Apache
 VERSION    = 2.4
-IMAGE      = devilbox/apache-2.4
+IMAGE      = devilbox/apache-$(VERSION)
 DIR        = .
 FILE       = Dockerfile
 DOCKER_TAG = $(TAG)
