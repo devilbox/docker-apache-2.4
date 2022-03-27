@@ -1,0 +1,174 @@
+FROM httpd:2.4-alpine
+MAINTAINER "cytopia" <cytopia@everythingcli.org>
+
+LABEL \
+	name="cytopia's apache 2.4 image" \
+	image="devilbox/apache-2.4" \
+	vendor="devilbox" \
+	license="MIT"
+
+
+###
+### Build arguments
+###
+ARG VHOST_GEN_GIT_REF=1.0.3
+ARG WATCHERD_GIT_REF=v1.0.2
+ARG CERT_GEN_GIT_REF=0.7
+
+ENV BUILD_DEPS \
+	make \
+	wget
+
+ENV RUN_DEPS \
+	ca-certificates \
+	bash \
+	openssl \
+	py3-yaml \
+	shadow \
+	supervisor
+
+
+###
+### Runtime arguments
+###
+ENV MY_USER=www-data
+ENV MY_GROUP=www-data
+ENV HTTPD_START="httpd-foreground"
+ENV HTTPD_RELOAD="/usr/local/apache2/bin/httpd -k stop"
+
+
+###
+### Install required packages
+###
+RUN set -eux \
+	&& apk add --no-cache \
+		${BUILD_DEPS} \
+		${RUN_DEPS} \
+	\
+	# Install vhost-gen
+	&& wget --no-check-certificate -O vhost-gen.tar.gz "https://github.com/devilbox/vhost-gen/archive/refs/tags/${VHOST_GEN_GIT_REF}.tar.gz" \
+	&& tar xvfz vhost-gen.tar.gz \
+	&& cd "vhost-gen-${VHOST_GEN_GIT_REF}" \
+	&& make install \
+	&& cd .. \
+	&& rm -rf vhost*gen* \
+	\
+	# Install cert-gen
+	&& wget --no-check-certificate -O /usr/bin/ca-gen https://raw.githubusercontent.com/devilbox/cert-gen/${CERT_GEN_GIT_REF}/bin/ca-gen \
+	&& wget --no-check-certificate -O /usr/bin/cert-gen https://raw.githubusercontent.com/devilbox/cert-gen/${CERT_GEN_GIT_REF}/bin/cert-gen \
+	&& chmod +x /usr/bin/ca-gen \
+	&& chmod +x /usr/bin/cert-gen \
+	\
+	# Install watcherd
+	&& wget --no-check-certificate -O /usr/bin/watcherd https://raw.githubusercontent.com/devilbox/watcherd/${WATCHERD_GIT_REF}/watcherd \
+	&& chmod +x /usr/bin/watcherd \
+	\
+	# Clean-up
+	&& apk del \
+		${BUILD_DEPS}
+
+
+###
+### Configure Apache
+###
+RUN set -eux \
+	&& APACHE_VERSION="$( httpd -V | grep -Eo 'Apache/[.0-9]+' | awk -F'/' '{print $2}' )" \
+	&& ( \
+		echo "ServerName localhost"; \
+		\
+		echo "LoadModule http2_module modules/mod_http2.so"; \
+		echo "LoadModule proxy_module modules/mod_proxy.so"; \
+		echo "LoadModule proxy_http_module modules/mod_proxy_http.so"; \
+		echo "LoadModule proxy_http2_module modules/mod_proxy_http2.so"; \
+		echo "LoadModule proxy_fcgi_module modules/mod_proxy_fcgi.so"; \
+		echo "LoadModule rewrite_module modules/mod_rewrite.so"; \
+		\
+		echo "Include conf/extra/httpd-default.conf"; \
+		echo "IncludeOptional /etc/httpd-custom.d/*.conf"; \
+		echo "IncludeOptional /etc/httpd/conf.d/*.conf"; \
+		echo "IncludeOptional /etc/httpd/vhost.d/*.conf"; \
+		\
+		echo "LoadModule ssl_module modules/mod_ssl.so"; \
+		echo "LoadModule socache_shmcb_module modules/mod_socache_shmcb.so" ;\
+		echo "Listen 443"; \
+		echo "SSLCipherSuite HIGH:MEDIUM:!MD5:!RC4:!3DES"; \
+		echo "SSLProxyCipherSuite HIGH:MEDIUM:!MD5:!RC4:!3DES"; \
+		echo "SSLHonorCipherOrder on"; \
+		echo "SSLProtocol all -SSLv3"; \
+		echo "SSLProxyProtocol all -SSLv3"; \
+		echo "SSLPassPhraseDialog  builtin"; \
+		echo "SSLSessionCache        \"shmcb:/usr/local/apache2/logs/ssl_scache(512000)\""; \
+		echo "SSLSessionCacheTimeout  300"; \
+		\
+		echo "<If \"%{THE_REQUEST} =~ m#^.*HTTP/1\.0\$#\">"; \
+		echo "    Header always set Via \"1.0 %{HOSTNAME}e (apache/${APACHE_VERSION})\""; \
+		echo "</If>"; \
+		echo "<If \"%{THE_REQUEST} =~ m#^.*HTTP/1\.1\$#\">"; \
+		echo "    Header always set Via \"1.1 %{HOSTNAME}e (apache/${APACHE_VERSION})\""; \
+		echo "</If>"; \
+		echo "<If \"%{THE_REQUEST} =~ m#^.*HTTP/2\.0\$#\">"; \
+		echo "    Header always set Via \"2.0 %{HOSTNAME}e (apache/${APACHE_VERSION})\""; \
+		echo "</If>"; \
+		\
+		echo "HTTPProtocolOptions unsafe"; \
+		\
+		# https://github.com/cytopia/devilbox/issues/862
+		echo "Mutex sem"; \
+		\
+	) >> /usr/local/apache2/conf/httpd.conf
+
+
+###
+### Create directories
+###
+RUN set -eux \
+	&& mkdir -p /etc/httpd-custom.d \
+	&& mkdir -p /etc/httpd/conf.d \
+	&& mkdir -p /etc/httpd/vhost.d \
+	&& mkdir -p /var/www/default/htdocs \
+	&& mkdir -p /shared/httpd \
+	&& chmod 0775 /shared/httpd \
+	&& chown ${MY_USER}:${MY_GROUP} /shared/httpd
+
+
+###
+### Symlink Python3 to Python
+###
+RUN set -eux \
+	&& ln -sf /usr/bin/python3 /usr/bin/python
+
+
+###
+### Copy files
+###
+COPY ./data/vhost-gen/main.yml /etc/vhost-gen/main.yml
+COPY ./data/vhost-gen/mass.yml /etc/vhost-gen/mass.yml
+COPY ./data/create-vhost.sh /usr/local/bin/create-vhost.sh
+COPY ./data/docker-entrypoint.d /docker-entrypoint.d
+COPY ./data/docker-entrypoint.sh /docker-entrypoint.sh
+
+
+###
+### Ports
+###
+EXPOSE 80
+EXPOSE 443
+
+
+###
+### Volumes
+###
+VOLUME /shared/httpd
+VOLUME /ca
+
+
+###
+### Signals
+###
+STOPSIGNAL SIGTERM
+
+
+###
+### Entrypoint
+###
+ENTRYPOINT ["/docker-entrypoint.sh"]

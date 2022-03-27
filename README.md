@@ -11,7 +11,8 @@
 
 **[devilbox/docker-apache-2.4](https://github.com/devilbox/docker-apache-2.4)**
 
-**Available Architectures:**  `amd64`, `arm64`, `386`, `arm/v7`, `arm/v6`
+* **Available Architectures:**  `amd64`, `arm64`, `386`, `arm/v7`, `arm/v6`
+* **Available Docker tags:**  `latest`, `alpine`, `debian`
 
 This image is based on the official **[Apache 2.4](https://hub.docker.com/_/httpd)** Docker image and extends it with the ability to have **virtual hosts created automatically**, as well as **adding SSL certificates** when creating new directories. For that to work, it integrates two tools that will take care about the whole process: **[watcherd](https://github.com/devilbox/watcherd)** and **[vhost-gen](https://github.com/devilbox/vhost-gen)**.
 
