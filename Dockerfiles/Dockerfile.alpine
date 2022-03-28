@@ -25,7 +25,8 @@ ENV RUN_DEPS \
 	openssl \
 	py3-yaml \
 	shadow \
-	supervisor
+	supervisor \
+	tzdata
 
 
 ###
