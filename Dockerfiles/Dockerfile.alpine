@@ -74,6 +74,8 @@ RUN set -eux \
 		echo "LoadModule proxy_http_module modules/mod_proxy_http.so"; \
 		echo "LoadModule proxy_http2_module modules/mod_proxy_http2.so"; \
 		echo "LoadModule proxy_html_module modules/mod_proxy_html.so"; \
+		# [proxy_html] I18n support in mod_proxy_html requires mod_xml2enc.
+		echo "LoadModule xml2enc_module modules/mod_xml2enc.so"; \
 		echo "LoadModule proxy_fcgi_module modules/mod_proxy_fcgi.so"; \
 		echo "LoadModule rewrite_module modules/mod_rewrite.so"; \
 		\
