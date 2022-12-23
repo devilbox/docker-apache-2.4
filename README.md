@@ -143,9 +143,8 @@ The provided Docker images add a lot of injectables in order to customize it to 
    <code><a href="doc/environment-variables.md#-timezone" >TIMEZONE</a></code><br/>
   </td>
   <td>
-   <strong>Nginx</strong><br/>
-   <code><a href="doc/environment-variables.md#-worker_connections" >WORKER_CONNECTIONS</a></code><br/>
-   <code><a href="doc/environment-variables.md#-worker_processes" >WORKER_PROCESSES</a></code><br/>
+   <strong>Apache</strong><br/>
+   -
   </td>
  </tr>
  <tr valign="top" style="vertical-align:top">

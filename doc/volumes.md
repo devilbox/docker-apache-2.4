@@ -70,4 +70,4 @@ Mount this directory to your local file system and add any valid `*.conf` files 
 * **type:** config directory
 * **purpose:** Add [vhost-gen](https://github.com/devilbox/vhost-gen) templates to alter the webserver behaviour
 
-Copy and customize [apache22.yml](https://github.com/devilbox/vhost-gen/blob/master/etc/templates/apache22.yml) into this mounted directory for global vhost customizations.
+Copy and customize [apache24.yml](https://github.com/devilbox/vhost-gen/blob/master/etc/templates/apache24.yml) into this mounted directory for global vhost customizations.
