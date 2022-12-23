@@ -71,6 +71,7 @@ RUN set -eux \
 		echo "LoadModule proxy_module modules/mod_proxy.so"; \
 		echo "LoadModule proxy_http_module modules/mod_proxy_http.so"; \
 		echo "LoadModule proxy_http2_module modules/mod_proxy_http2.so"; \
+		echo "LoadModule proxy_html_module modules/mod_proxy_html.so"; \
 		echo "LoadModule proxy_fcgi_module modules/mod_proxy_fcgi.so"; \
 		echo "LoadModule rewrite_module modules/mod_rewrite.so"; \
 		\
