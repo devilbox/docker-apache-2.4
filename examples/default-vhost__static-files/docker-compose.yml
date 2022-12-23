@@ -5,7 +5,7 @@ services:
 
   # HTTPD Server
   httpd:
-    image: devilbox/apache-2.2:alpine
+    image: devilbox/apache-2.4:alpine
     build:
       context: ../../Dockerfiles
       dockerfile: Dockerfile.alpine
