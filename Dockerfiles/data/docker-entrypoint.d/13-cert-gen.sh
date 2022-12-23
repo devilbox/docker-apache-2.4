@@ -4,10 +4,14 @@ set -e
 set -u
 set -o pipefail
 
+###
+### This file holds functions to create CA and Certs
+###
 
-############################################################
-# Functions
-############################################################
+
+# -------------------------------------------------------------------------------------------------
+# ACTION FUNCTIONS
+# -------------------------------------------------------------------------------------------------
 
 ###
 ### Generate CA
@@ -15,27 +19,25 @@ set -o pipefail
 cert_gen_generate_ca() {
 	local key="${1}"
 	local crt="${2}"
-	local verbose="${3}"
-	local debug="${4}"
 
 	# Create directories
 	if [ ! -d "$( dirname "${key}" )" ]; then
-		run "mkdir -p $( dirname "${key}" )" "${debug}"
+		run "mkdir -p $( dirname "${key}" )"
 	fi
 	if [ ! -d "$( dirname "${crt}" )" ]; then
-		run "mkdir -p $( dirname "${crt}" )" "${debug}"
-	fi
-
-	# cert-gen verbosity
-	if [ "${verbose}" -gt "0" ]; then
-		verbose="-v"
-	else
-		verbose=""
+		run "mkdir -p $( dirname "${crt}" )"
 	fi
 
 	# Generate CA if it does not exist yet
 	if [ ! -f "${key}" ] || [ ! -f "${crt}" ]; then
-		run "ca-gen ${verbose} -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox -n 'Devilbox Root CA' -e 'cytopia@devilbox.org' ${key} ${crt}" "${DEBUG_LEVEL}"
+		log "warn" "(Re)creating Certificate Authority. You may need to (re)import it into your browser."
+		if ! run \
+			"ca-gen -v -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox -n 'Devilbox Root CA' -e 'cytopia@devilbox.org' \"${key}\" \"${crt}\"" \
+			"Failed to create Certificate Authority."; then
+			exit 1
+		fi
+	else
+		log "info" "Existing Certificate Authority files found in: $(dirname "${key}")"
 	fi
 }
 
@@ -52,8 +54,6 @@ cert_gen_generate_cert() {
 	local csr="${6}"
 	local crt="${7}"
 	local domains="${8}"
-	local verbose="${9}"
-	local debug="${10}"
 
 	# If not enabled, skip SSL certificate eneration
 	if [ "${enable}" != "1" ]; then
@@ -67,20 +67,13 @@ cert_gen_generate_cert() {
 
 	# Create directories
 	if [ ! -d "$( dirname "${key}" )" ]; then
-		run "mkdir -p $( dirname "${key}" )" "${debug}"
+		run "mkdir -p $( dirname "${key}" )"
 	fi
 	if [ ! -d "$( dirname "${csr}" )" ]; then
-		run "mkdir -p $( dirname "${csr}" )" "${debug}"
+		run "mkdir -p $( dirname "${csr}" )"
 	fi
 	if [ ! -d "$( dirname "${crt}" )" ]; then
-		run "mkdir -p $( dirname "${crt}" )" "${debug}"
-	fi
-
-	# cert-gen verbosity
-	if [ "${verbose}" -gt "0" ]; then
-		verbose="-v"
-	else
-		verbose=""
+		run "mkdir -p $( dirname "${crt}" )"
 	fi
 
 	# Get domain name and alt_names
@@ -98,5 +91,9 @@ cert_gen_generate_cert() {
 	done
 	alt_names="$( echo "${alt_names}" | xargs )" # tim
 
-	run "cert-gen ${verbose} -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox -n '${cn}' -e 'admin@${cn}' -a '${alt_names}' ${ca_key} ${ca_crt} ${key} ${csr} ${crt}" "${debug}"
+	if ! run \
+		"cert-gen -v -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox -n '${cn}' -e 'admin@${cn}' -a '${alt_names}' \"${ca_key}\" \"${ca_crt}\" \"${key}\" \"${csr}\" \"${crt}\"" \
+		"Failed to create SSL certificate"; then
+		exit 1
+	fi
 }
