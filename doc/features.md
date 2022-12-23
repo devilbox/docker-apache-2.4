@@ -57,7 +57,7 @@ docker run -it \
     -e MASS_VHOST_DOCROOT_DIR=www \
     -e MASS_VHOST_TLD_SUFFIX=.loc \
     -v /local/path:/shared/httpd \
-    devilbox/apache-2.2
+    devilbox/apache-2.4
 ```
 
 
@@ -83,7 +83,7 @@ docker run -it \
     -v $(pwd)/www:/var/www/default \
     -e MAIN_VHOST_BACKEND='conf:phpfpm:tcp:phpserver:9000' \
     --link phpserver \
-    devilbox/apache-2.2
+    devilbox/apache-2.4
 ```
 
 

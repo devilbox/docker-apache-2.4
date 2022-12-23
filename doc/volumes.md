@@ -24,7 +24,7 @@ Mount this directory to your local file system in order to add html, js, php, et
 docker run -d -it \
     -v $(pwd)/default:/var/www/default \
     -e MAIN_VHOST_ENABLE=1 \
-    devilbox/apache-2.2
+    devilbox/apache-2.4
 ```
 
 
@@ -43,7 +43,7 @@ Mount this directory to your local file system in order to add html, js, php, et
 docker run -d -it \
     -v $(pwd)/projects:/shared/httpd \
     -e MASS_VHOST_ENABLE=1 \
-    devilbox/apache-2.2
+    devilbox/apache-2.4
 ```
 
 
